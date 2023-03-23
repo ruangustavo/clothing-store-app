@@ -1,4 +1,11 @@
 import { pool } from "./database";
+import {
+  SELECT_ALL_PRODUCTS,
+  SELECT_PRODUCT_BY_ID,
+  INSERT_PRODUCT,
+  UPDATE_PRODUCT,
+  DELETE_PRODUCT,
+} from "./schemas/productsSchema";
 
 interface ProductType {
   id: number;
@@ -8,40 +15,38 @@ interface ProductType {
 
 type ProductTypeWithoutId = Omit<ProductType, "id">;
 
-class Product {
+export class Product {
   static async findAll(): Promise<ProductType[]> {
-    const query = "SELECT * FROM products";
-    const { rows } = await pool.query(query);
+    const { rows } = await pool.query(SELECT_ALL_PRODUCTS);
     return rows;
   }
 
-  static async findById(id: number): Promise<ProductType[]> {
-    const query = "SELECT * FROM products WHERE id = $1";
-    const { rows } = await pool.query(query, [id]);
+  static async findById(id: number): Promise<ProductType> {
+    const { rows } = await pool.query(SELECT_PRODUCT_BY_ID, [id]);
     return rows[0];
   }
 
   static async create(product: ProductTypeWithoutId): Promise<ProductType[]> {
-    const { name, price } = product;
-    const query =
-      "INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *";
-    const { rows } = await pool.query(query, [name, price]);
-    return rows[0];
+    const queryResult = await pool.query(INSERT_PRODUCT, [
+      product.name,
+      product.price,
+    ]);
+    return queryResult.rows[0];
   }
 
   static async update(
     id: number,
     product: ProductTypeWithoutId
   ): Promise<ProductType[]> {
-    const { name, price } = product;
-    const query =
-      "UPDATE products SET name = $1, price = $2 WHERE id = $3 RETURNING *";
-    const { rows } = await pool.query(query, [name, price, id]);
-    return rows[0];
+    const queryResult = await pool.query(UPDATE_PRODUCT, [
+      product.name,
+      product.price,
+      id,
+    ]);
+    return queryResult.rows[0];
   }
 
   static async delete(id: number): Promise<void> {
-    const query = "DELETE FROM products WHERE id = $1";
-    await pool.query(query, [id]);
+    await pool.query(DELETE_PRODUCT, [id]);
   }
 }

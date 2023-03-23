@@ -1,28 +1,34 @@
 import express from "express";
+import { Product } from "../models/product";
 
 export const productRouter = express.Router();
 
-productRouter.get("", (_req, res) => {
-  res.send("Get all products");
+productRouter.get("", async (_req, res) => {
+  const products = await Product.findAll();
+  res.send(products);
 });
 
-productRouter.get(":id", (req, res) => {
-  const id = req.params.id;
-  res.send(`Get product with ID ${id}`);
+productRouter.get("/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  const product = await Product.findById(id);
+  res.send(product);
 });
 
-productRouter.post("", (req, res) => {
-  const product = req.body;
-  res.send(`Create product: ${JSON.stringify(product)}`);
+productRouter.post("", async (req, res) => {
+  const productToCreate = req.body;
+  const createdProducts = await Product.create(productToCreate);
+  res.send(createdProducts);
 });
 
-productRouter.put(":id", (req, res) => {
-  const id = req.params.id;
-  const product = req.body;
-  res.send(`Update product with ID ${id}: ${JSON.stringify(product)}`);
+productRouter.put("/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  const productToUpdate = req.body;
+  const updatedProduct = await Product.update(id, productToUpdate);
+  return res.send(updatedProduct);
 });
 
-productRouter.delete(":id", (req, res) => {
-  const id = req.params.id;
-  res.send(`Delete product with ID ${id}`);
+productRouter.delete("/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  await Product.delete(id);
+  res.send({ message: "Product deleted" });
 });
