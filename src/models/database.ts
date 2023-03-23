@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 import { CREATE_PRODUCTS_TABLE_SCHEMA } from "./schemas/products/productsSchema";
+import { CREATE_AUTH_TABLE_SCHEMA } from "./schemas/auth/authSchema";
 
 // TODO: use 'dotenv' library
 export const pool = new Pool({
@@ -11,3 +12,4 @@ export const pool = new Pool({
 });
 
 pool.query(CREATE_PRODUCTS_TABLE_SCHEMA);
+pool.query(CREATE_AUTH_TABLE_SCHEMA);
