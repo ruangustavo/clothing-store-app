@@ -1,11 +1,11 @@
 import express from "express";
 import { productRouter } from "./routes/productRouter";
-import { authRouter } from "./controllers/authController";
+import { authRouter } from "./routes/authRouter";
 
 const app = express();
 app.use(express.json());
+app.use("/", authRouter);
 app.use("/products", productRouter);
-app.use("/auth", authRouter);
 
 const port = process.env.PORT || 3333;
 app.listen(port, () => {
