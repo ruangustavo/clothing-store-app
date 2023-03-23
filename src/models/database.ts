@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { CREATE_PRODUCTS_TABLE_SCHEMA } from "./schemas/productsSchema";
+import { CREATE_PRODUCTS_TABLE_SCHEMA } from "./schemas/products/productsSchema";
 
 // TODO: use 'dotenv' library
 export const pool = new Pool({

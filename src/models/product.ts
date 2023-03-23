@@ -5,7 +5,7 @@ import {
   INSERT_PRODUCT,
   UPDATE_PRODUCT,
   DELETE_PRODUCT,
-} from "./schemas/productsSchema";
+} from "./queries/products/productsQueries";
 
 interface ProductType {
   id: number;
