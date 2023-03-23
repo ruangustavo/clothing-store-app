@@ -24,7 +24,7 @@ productRouter.put("/:id", async (req, res) => {
   const id = Number(req.params.id);
   const productToUpdate = req.body;
   const updatedProduct = await Product.update(id, productToUpdate);
-  return res.send(updatedProduct);
+  res.send(updatedProduct);
 });
 
 productRouter.delete("/:id", async (req, res) => {
